@@ -5,7 +5,9 @@ module AudioController(
     output       micClk, 	// Mic clock 
     output       chSel,		// Channel select; 0 for rising edge, 1 for falling edge
     output       audioOut,	// PWM signal to the audio jack	
-    output       audioEn);	// Audio Enable
+    output       audioEn,	// Audio Enable
+	output reg [3:0] Anode_Activate, // anode signals of the 7-segment LED display
+    output reg [6:0] LED_out);	
 
 	localparam MHz = 1000000;
 	localparam SYSTEM_FREQ = 100*MHz; // System clock frequency
@@ -59,5 +61,6 @@ module AudioController(
     
     PWMSerializer ourSerializer(clk,1'b0, (duty_cycle + duty_cycle_mic)>>2, audioOut);
 
+	Seven_Segment_Display_Number dis(clk, reset, 15'd1003, Anode_Activate, LED_out );
 
 endmodule
