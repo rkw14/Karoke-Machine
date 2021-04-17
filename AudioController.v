@@ -2,7 +2,7 @@ module AudioController(
     input        clk, 		// System Clock Input 100 Mhz
     input        micData,	// Microphone Output
     input[3:0]   switches,	// Tone control switches
-    output       micClk, 	// Mic clock 
+    output reg      micClk, 	// Mic clock 
     output       chSel,		// Channel select; 0 for rising edge, 1 for falling edge
     output       audioOut,	// PWM signal to the audio jack	
     output       audioEn);	// Audio Enable
