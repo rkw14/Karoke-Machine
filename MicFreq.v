@@ -9,7 +9,7 @@ module MicFreq #(
     input signal,
     output [15:0] micFrequency);
     
-    localparam WAVE_WINDOW        = 500000;
+    localparam WAVE_WINDOW        = 100000000;
     localparam SMALL_WAVE_WINDOW  = WAVE_WINDOW/100;
     localparam WAVE_HALF          = WAVE_WINDOW >> 1;
     localparam WAVE_COUNTER_BITS  = $clog2(WAVE_WINDOW) + 1;
@@ -41,7 +41,7 @@ module MicFreq #(
 
     always @(negedge clk) begin
         if(pulseCounter == WAVE_WINDOW-1)
-            micFrequency <= sigOn * 200;
+            micFrequency <= sigOn; //* 200;
     end
 
     
