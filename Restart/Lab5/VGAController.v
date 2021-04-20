@@ -119,6 +119,6 @@ module VGAController(
 	wire isNote;
 	assign isNote = (x>= lower && (x <= upper));
 	// Quickly assign the output colors to their channels using concatenation
-	assign {VGA_R, VGA_G, VGA_B} = isNote ? 12'd255 : colorOut ;
+	assign {VGA_R, VGA_G, VGA_B} = isNote ? colorOut : 12'd0;
 	Seven_Segment_Display_Number seg(clk, reset, counter, Anode_Activate, LED_out, 1'b1);
 endmodule
