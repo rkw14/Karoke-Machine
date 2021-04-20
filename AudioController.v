@@ -7,7 +7,16 @@ module AudioController(
     output       audioOut,	// PWM signal to the audio jack	
     output       audioEn,
     output [3:0] Anode_Activate, // anode signals of the 7-segment LED display
-    output [6:0] LED_out);	// Audio Enable
+    output [6:0] LED_out,
+	output LEDout,
+	output hSync, 		// H Sync Signal
+	output vSync, 		// Veritcal Sync Signal
+	output[3:0] VGA_R,  // Red Signal Bits
+	output[3:0] VGA_G,  // Green Signal Bits
+	output[3:0] VGA_B,  // Blue Signal Bits
+	inout ps2_clk,
+	inout ps2_data,
+	input reset);	
 
 	localparam MHz = 1000000;
 	localparam SYSTEM_FREQ = 100*MHz; // System clock frequency
@@ -59,12 +68,16 @@ module AudioController(
 		stabilizedMicData <= micData;
 	end
     wire [15:0] micFrequency;
-    PWMDeserializer ourDeserializer(clk, 1'b0, stabilizedMicData, duty_cycle_mic);
+    //PWMDeserializer ourDeserializer(clk, 1'b0, stabilizedMicData, duty_cycle_mic);
     
-    PWMSerializer ourSerializer(clk,1'b0, /*(duty_cycle +*/ duty_cycle_mic/*)>>1*/, audioOut);
+    PWMSerializer ourSerializer(clk,1'b0, duty_cycle, audioOut);
+	wire [15:0] signal;
+	assign  signal [15:4] = 12'b0;
+	assign  signal  [3:0] = switches;
+	Seven_Segment_Display_Number dis(clk, reset, signal, Anode_Activate, LED_out );
 
-	Seven_Segment_Display_Number dis(clk, reset, micFrequency, Anode_Activate, LED_out );
-
-	MicFreq mic(clk, reset, stabilizedMicData, micFrequency);
+	VGAController vga(clk, reset, hSync, vSync, VGA_R, VGA_G, VGA_B,
+	ps2_clk, ps2_data, LEDout, switches );
+	//MicFreq mic(clk, reset, stabilizedMicData, micFrequency);
 
 endmodule

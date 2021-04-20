@@ -10,12 +10,10 @@ module VGAController(
 	inout ps2_clk,
 	inout ps2_data,
 	output LEDout,
-	output [3:0] Anode_Activate,
-	output [6:0] LED_out,
-	input button);
+	input [3:0] switches);
 	
 	// Lab Memory Files Location
-	localparam FILES_PATH = "C:/Users/rkw14/Downloads/Restart/Lab5/";
+	localparam FILES_PATH = "C:/Users/rkw14/Desktop/Karoke-Machine/";
 
 	// Clock divider 100 MHz -> 25 MHz
 	wire clk25; // 25MHz clock
@@ -90,35 +88,45 @@ module VGAController(
 	wire[BITS_PER_COLOR-1:0] colorOut; 			  // Output color 
 	assign colorOut = active ? colorData : 12'd0; // When not active, output black
 	reg [26:0] one_second_counter;
-	reg writeTo= 0;
-	reg[15:0] counter = 2;
 	reg[26:0] upper = 80;
 	reg[26:0] lower = 40;
-	always @(posedge clk)
-    begin
-        if (button && one_second_counter >=19999999 ) begin
+	// always @(posedge clk)
+    // begin
+    //     if (button && one_second_counter >=19999999 ) begin
+	// 		one_second_counter <= 0;
+	// 		writeTo <= 1;
+	// 		if (counter >= 16) begin
+	// 			counter <= 1;
+	// 			lower <= 0;
+	// 			upper <= 40;
+	// 		end
+	// 		else begin
+	// 			counter <= counter + 1;
+	// 			lower <= counter * 40;
+	// 			upper <= (counter+1) * 40;
+	// 		end
+	// 	end
+	// 	else
+	// 		one_second_counter <= one_second_counter + 1;
+	// 		writeTo <= 0;
+    // end 
+
+	always @(posedge clk) begin
+		if (one_second_counter == 99999999 )
 			one_second_counter <= 0;
-			writeTo <= 1;
-			if (counter >= 16) begin
-				counter <= 1;
-				lower <= 0;
-				upper <= 40;
-			end
-			else begin
-				counter <= counter + 1;
-				lower <= counter * 40;
-				upper <= (counter+1) * 40;
-			end
-		end
 		else
-			one_second_counter <= one_second_counter + 1;
-			writeTo <= 0;
-    end 
-	assign LEDout = (one_second_counter>=49999999);
+			one_second_counter <= one_second_counter +1;
+	end
+	always @(posedge clk) begin
+		upper<= (switches +1) *40;
+		lower <= switches*40;
+	end
+
+	assign LEDout = (one_second_counter<=49999999);
 	
 	wire isNote;
 	assign isNote = (x>= lower && (x <= upper));
 	// Quickly assign the output colors to their channels using concatenation
 	assign {VGA_R, VGA_G, VGA_B} = isNote ? colorOut : 12'd0;
-	Seven_Segment_Display_Number seg(clk, reset, counter, Anode_Activate, LED_out, 1'b1);
+	//Seven_Segment_Display_Number seg(clk, reset, counter, Anode_Activate, LED_out, 1'b1);
 endmodule
