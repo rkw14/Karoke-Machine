@@ -65,7 +65,7 @@ module AudioController(
 				counter_pos <= 0;
 			end
 			else begin
-				counter_pos<= counter + 1;
+				counter_pos<= counter_pos + 1;
 			end
 		end
 
