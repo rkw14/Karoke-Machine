@@ -38,4 +38,5 @@ module PWMDeserializer #(
     end
     
     assign duty_cycle = propWidth/99;
+    
 endmodule
