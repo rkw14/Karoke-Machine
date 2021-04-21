@@ -1,7 +1,7 @@
 module regfile(
 	clock, ctrl_writeEnable, ctrl_reset, ctrl_writeReg,
 	ctrl_readRegA, ctrl_readRegB, data_writeReg, data_readRegA,
-	data_readRegB);
+	data_readRegB,reg_out_1,reg_in_1);
 	
 	input clock, ctrl_writeEnable, ctrl_reset;
 	input [4:0] ctrl_writeReg, ctrl_readRegA, ctrl_readRegB;
@@ -24,6 +24,7 @@ module regfile(
 	//Might need to change reset to negedge as well
 	always @(negedge clock or posedge ctrl_reset)
 	begin
+		registers[5] <= reg_in_1;
 		if(ctrl_reset)
 			begin
 				for(i = 0; i < 32; i = i + 1)
@@ -40,8 +41,8 @@ module regfile(
 	assign data_readRegB = registers[ctrl_readRegB];
 
 	//Assign register 3 to be score counter
-	assign reg_out_1 = registers[5'd3];
-	registers[5'd5] = reg_in_1;
+	assign reg_out_1 = registers[3];
+	// registers[5] <= reg_in_1;
 
 
 	

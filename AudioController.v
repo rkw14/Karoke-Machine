@@ -16,7 +16,9 @@ module AudioController(
 	output[3:0] VGA_B,  // Blue Signal Bits
 	inout ps2_clk,
 	inout ps2_data,
-	input reset);	
+	input reset,
+	input[31:0] score_val,
+	output[31:0] counter_val);	
 
 	localparam MHz = 1000000;
 	localparam SYSTEM_FREQ = 100*MHz; // System clock frequency
@@ -36,6 +38,7 @@ module AudioController(
 	reg [3:0] displayPosition;
 	reg [3:0] counter_pos= 0;
 	reg [15:0] score=0;
+	reg [31:0] correct_count = 0;
 	always @(*)
 	begin
 		case(target[counter_pos])
@@ -59,8 +62,11 @@ module AudioController(
 		endcase
 	end
 	always @(posedge clk)begin
+
+		score <= score_val;
 		if (displayPosition == switches) begin
-			score<= score + 5;
+			//score<= score + 5;
+			correct_count <= correct_count + 1;
 			if (counter_pos == 8) begin
 				counter_pos <= 0;
 			end
@@ -69,7 +75,8 @@ module AudioController(
 			end
 		end
 
-	end	
+	end
+	assign counter_val = correct_count;	
 	////////////////////
 	// Your Code Here //
 	////////////////////
@@ -113,10 +120,11 @@ module AudioController(
 	reg toggle;
 
 	always @(posedge micClk) begin
-		if(one_second_counter>=99999999) 
+		if(one_second_counter>=99999999) begin
             one_second_counter <= 0;
 			toggle <= ~toggle;
-        else
+			end
+        else 
             one_second_counter <= one_second_counter + 1;
 	end
 

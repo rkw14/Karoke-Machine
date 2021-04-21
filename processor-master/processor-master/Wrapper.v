@@ -24,7 +24,8 @@
  *
  **/
 
-module Wrapper (clock, reset);
+module Wrapper (clock, reset,micData,switches,micClk,chSel,audioOut,audioEn,Anode_Activate,LED_out,
+hSync,vSync,VGA_R,VGA_G,VGA_B,ps2_clk,ps2_data);
 	input clock, reset;
 
 	wire rwe, mwe;
@@ -37,22 +38,21 @@ module Wrapper (clock, reset);
 	wire[31:0] reg_out_1,reg_in_1;
 
 	//input        clk, 		// System Clock Input 100 Mhz
-    input        micData,	// Microphone Output
-    input[3:0]   switches,	// Tone control switches
-    output reg      micClk, 	// Mic clock 
-    output       chSel,		// Channel select; 0 for rising edge, 1 for falling edge
-    output       audioOut,	// PWM signal to the audio jack	
-    output       audioEn,   // Audio enable
-    output [3:0] Anode_Activate, // anode signals of the 7-segment LED display
-    output [6:0] LED_out,
-	input reset,
-	output hSync, 		// H Sync Signal
-	output vSync, 		// Veritcal Sync Signal
-	output[3:0] VGA_R,  // Red Signal Bits
-	output[3:0] VGA_G,  // Green Signal Bits
-	output[3:0] VGA_B,  // Blue Signal Bits
-	inout ps2_clk,
-	inout ps2_data);
+    input        micData;	// Microphone Output
+    input[3:0]   switches;	// Tone control switches
+    output      micClk; 	// Mic clock 
+    output       chSel;		// Channel select; 0 for rising edge, 1 for falling edge
+    output       audioOut;	// PWM signal to the audio jack	
+    output       audioEn;   // Audio enable
+    output [3:0] Anode_Activate; // anode signals of the 7-segment LED display
+    output [6:0] LED_out;
+	output hSync; 		// H Sync Signal
+	output vSync; 		// Veritcal Sync Signal
+	output[3:0] VGA_R;  // Red Signal Bits
+	output[3:0] VGA_G;  // Green Signal Bits
+	output[3:0] VGA_B;  // Blue Signal Bits
+	inout ps2_clk;
+	inout ps2_data;
 
 
 	// ADD YOUR MEMORY FILE HERE
@@ -87,7 +87,7 @@ module Wrapper (clock, reset);
 		.data_writeReg(rData), .data_readRegA(regA), .data_readRegB(regB), .reg_out_1(reg_out_1),.reg_in_1(reg_in_1));
 						
 	// Processor Memory (RAM)
-	RAM ProcMem(.clk(clock), 
+	RAM1 ProcMem(.clk(clock), 
 		.wEn(mwe), 
 		.addr(memAddr[11:0]), 
 		.dataIn(memDataIn), 
