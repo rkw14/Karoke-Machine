@@ -61,21 +61,49 @@ module AudioController(
 		default: displayPosition = 4'd0;
 		endcase
 	end
+
+	// always @(posedge clk)begin
+
+	// 	score <= score_val;
+	// 	if (displayPosition == switches) begin
+	// 		//score<= score + 5;
+	// 		correct_count <= correct_count + 1;
+	// 		if (counter_pos == 8) begin
+	// 			counter_pos <= 0;
+	// 		end
+	// 		else begin
+	// 			counter_pos<= counter_pos + 1;
+	// 		end
+	// 	end
+
+	// end
+
+	reg load = 1;
+	reg[3:0] temp_reg = 0;
+
+	always @(negedge clk)begin
+		load <= 1'b0;
+	end
+
+	wire q;
+	lfsr randomizer(q, clk, 1'b0, 4'd5, load);
+
 	always @(posedge clk)begin
 
 		score <= score_val;
 		if (displayPosition == switches) begin
-			//score<= score + 5;
+			
 			correct_count <= correct_count + 1;
-			if (counter_pos == 8) begin
-				counter_pos <= 0;
-			end
-			else begin
-				counter_pos<= counter_pos + 1;
-			end
+
+			counter_pos[2:0] <= temp_reg[3:1];
+			counter_pos[3] <= q;
+			temp_reg <= counter_pos;
+
+			
 		end
 
 	end
+
 	assign counter_val = correct_count;	
 	////////////////////
 	// Your Code Here //

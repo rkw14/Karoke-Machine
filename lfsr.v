@@ -12,4 +12,10 @@ flipflop_lfsr F[3:0] (state_out, clk, rst, state_in);
 mux_lfsr M1[3:0] (state_in, load, seed, {state_out[2],state_out[1],state_out[0],nextbit});
 xor G1(nextbit, state_out[2], state_out[3]);
 assign q = nextbit;
+// for (i = 0; i < 3; i = i + 1) begin
+// 	//@(negedge clk);
+//     //$display(q);
+//     q[i] = nextbit;
+
+// 	end
 endmodule

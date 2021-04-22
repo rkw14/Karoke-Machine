@@ -9,4 +9,4 @@ a or b)
 q = (control & a) |
 (notcontrol & b);
 not (notcontrol, control);
-endmodule;
+endmodule
