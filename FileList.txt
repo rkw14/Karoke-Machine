@@ -1,0 +1,13 @@
+AudioController.v
+flipflop_lfsr.v
+lfsr.v
+lfsr_tb.v
+MicFreq.v
+mux_lfsr.v
+PWMDeserializer.v
+PWMSerializer.v
+RAM2.v
+Seven_Segment_Display_Number.v
+Seven_segment_LED_Display_Controller.v
+VGAController.v
+VGATimingGenerator.v

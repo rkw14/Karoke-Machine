@@ -42,22 +42,22 @@ module AudioController(
 	always @(*)
 	begin
 		case(target[counter_pos])
-		10'h105: displayPosition = 4'd0;
-		10'h125: displayPosition = 4'd1;
-		10'h149: displayPosition = 4'd2;
-		10'h15d: displayPosition = 4'd3;
-		10'h187: displayPosition = 4'd4;
-		10'h1b8: displayPosition = 4'd5;
-		10'h1ed: displayPosition = 4'd6;
-		10'h20b: displayPosition = 4'd7;
-		10'h24b: displayPosition = 4'd8;
-		10'h293: displayPosition = 4'd9;
-		10'h2ba: displayPosition = 4'd10;
-		10'h30f: displayPosition = 4'd11;
-		10'h370: displayPosition = 4'd12;
-		10'h3db: displayPosition = 4'd13;
-		10'h416: displayPosition = 4'd14;
-		10'h496: displayPosition = 4'd15;
+		11'h105: displayPosition = 4'd0;
+		11'h125: displayPosition = 4'd1;
+		11'h149: displayPosition = 4'd2;
+		11'h15d: displayPosition = 4'd3;
+		11'h187: displayPosition = 4'd4;
+		11'h1b8: displayPosition = 4'd5;
+		11'h1ed: displayPosition = 4'd6;
+		11'h20b: displayPosition = 4'd7;
+		11'h24b: displayPosition = 4'd8;
+		11'h293: displayPosition = 4'd9;
+		11'h2ba: displayPosition = 4'd10;
+		11'h30f: displayPosition = 4'd11;
+		11'h370: displayPosition = 4'd12;
+		11'h3db: displayPosition = 4'd13;
+		11'h416: displayPosition = 4'd14;
+		11'h496: displayPosition = 4'd15;
 		default: displayPosition = 4'd0;
 		endcase
 	end
@@ -86,7 +86,10 @@ module AudioController(
 	wire [6:0] duty_cycle_mic;
 
 
-	reg micClk = 0;
+	// reg micClk = 0;
+	initial begin
+		micClk <= 0;
+	end
 	reg ourClock = 0;
 	reg[31:0] counter = 0;
 	always @(posedge clk) begin
